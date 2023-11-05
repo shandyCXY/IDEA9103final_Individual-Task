@@ -119,21 +119,17 @@ function draw() {
   //background(255);
 
   drawSkyEllipse();
-
+  drawBuilding();
   waterSurface();
 
   //waterColor(poly,color(71,41,50));
   // Move the building to the middle of the canvas.
-  const xOffset = -(width - 32 * unitX);
-  const yOffset = -(height - 16 * unitY);
-  translate(xOffset, yOffset);
-  drawBuilding();
-
+  
   //color of building
 }
 
 function waterSurface() {
-  randomSeed(23);
+  randomSeed(52);
   translate(0, windowHeight / 2);
  
    let yoff = 0;
@@ -142,7 +138,7 @@ function waterSurface() {
     for (let x = 0; x < cols; x++) {
     //  let index = (x+y*windowWidth)*4;
       let angle = noise(xoff, yoff,zoff) * TWO_PI; //test add zoff make angle change;
-      let v = p5.Vector.fromAngle(angle*3.5);//angle change
+      let v = p5.Vector.fromAngle(angle*1.5);//angle change
       xoff += inc;
       //rect(x*scl,y*scl,scl,scl);
       noStroke();
@@ -165,7 +161,7 @@ function waterSurface() {
       fill(waterColorsLerpD[y % 8]);
     }
     yoff += inc;
-    zoff += 0.001;
+    zoff += 0.003;
 
   }
   //reference web:https://www.youtube.com/watch?v=BjoM9oKOAKY&t=3s.
@@ -207,6 +203,7 @@ function waterSurface() {
 // }
 
 function drawBuilding(){
+  
   fill(71, 41, 50);
   strokeWeight(2);
   stroke(43, 49, 45);
