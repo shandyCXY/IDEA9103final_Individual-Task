@@ -152,7 +152,7 @@ function waterSurface() {
       rotate(v.heading());
       rect(0, 0, 13, 15);//rectangle change
       pop();
-     
+      
     }
 
     if (y < 8) {
