@@ -145,7 +145,7 @@ function draw() {
 }
 
 function waterSurface() {
-  randomSeed(52);
+  
   translate(0, windowHeight / 2);
   let yoff = 0;
   for (let y = 0; y < rows / 2; y++) {
@@ -515,7 +515,7 @@ class Particle {
   constructor() {
     this.x = random(windowWidth);
     this.y = random(windowHeight);
-    this.speed = random(0, 5);
+    this.speed = random(0, 2);
     this.radius = random(1, 8);
 
     this.color = color(255,74);
