@@ -18,7 +18,6 @@ let cols, rows;
 let inc_2 = 0.01;
 let scl_2;
 
-
 let zoff = 0;
 let particles = [];
 
@@ -37,6 +36,8 @@ let h;
 let polyShadow;
 let polyBlurry1; //the transition part between building and distant building
 let polyBlurry2; //the distant building
+
+let isNighttime = false;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -119,33 +120,37 @@ function setup() {
   for (let i = 0; i < 500; i++) {
     particles.push(new Particle());
   }
-  
+
+  let currentHour = hour(); // Get the current hour
+  isNighttime = currentHour >= 20 || currentHour < 14;//star appear link the reallife time with control appear time
+
 }
 
 function draw() {
-  background(255);
+  background(0, 45);
   drawSkyEllipse();
   drawBuilding();
   waterSurface();
   skyAnimation();
+  if (isNighttime) {
+    drawStars();
+  }
   //waterColor(poly,color(71,41,50));
   // Move the building to the middle of the canvas.
-  
+
   //color of building
 }
 
-;
 function waterSurface() {
   randomSeed(52);
   translate(0, windowHeight / 2);
- 
-   let yoff = 0;
+  let yoff = 0;
   for (let y = 0; y < rows / 2; y++) {
     let xoff = 0;
     for (let x = 0; x < cols; x++) {
-    //  let index = (x+y*windowWidth)*4;
-      let angle = noise(xoff, yoff,zoff) * TWO_PI; //test add zoff make angle change;
-      let v = p5.Vector.fromAngle(angle*1.5);//angle change
+      //  let index = (x+y*windowWidth)*4;
+      let angle = noise(xoff, yoff, zoff) * TWO_PI; //test add zoff make angle change;
+      let v = p5.Vector.fromAngle(angle * 1.5); //angle change
       xoff += inc;
       //rect(x*scl,y*scl,scl,scl);
       noStroke();
@@ -153,9 +158,8 @@ function waterSurface() {
       push();
       translate(x * scl, y * scl);
       rotate(v.heading());
-      rect(0, 0, 13, 15);//rectangle change
+      rect(0, 0, 13, 15); //rectangle change
       pop();
-      
     }
 
     if (y < 8) {
@@ -169,7 +173,6 @@ function waterSurface() {
     }
     yoff += inc;
     zoff += 0.003;
-
   }
   //change the code here(my pre code ->animation)
   //reference web:https://www.youtube.com/watch?v=BjoM9oKOAKY&t=3s.
@@ -210,7 +213,7 @@ function waterSurface() {
 //   polyBuilding=new Poly(v);
 // }
 
-function drawBuilding(){
+function drawBuilding() {
   fill(71, 41, 50);
   strokeWeight(2);
   stroke(43, 49, 45);
@@ -270,7 +273,6 @@ function shadow() {
   v.push(createVector(15 * unitX, 14.3 * unitY));
   v.push(createVector(15.5 * unitX, 15.5 * unitY));
   polyShadow = new Poly(v);
-  
 }
 
 function blurryBg1() {
@@ -474,25 +476,24 @@ function drawSkyEllipse() {
   drawEllipse(skyLerpEllipseD, skyColorsLerpD, 25);
 }
 
-
 //draw ellipses between each two basic color lines
 //r: rows
 //colorArray: each array for sky
 function drawEllipse(lerpEllipse, colorArray, r) {
+  background(0, 0, 0, 45);
   for (let i = 0; i < 7; i++) {
     for (let j = 0; j < brushAmount; j++) {
       fill(colorArray[i]);
       lerpEllipse.push(
         ellipse(
-          brushWidth / 2 + brushWidth * j,
-          brushWidth / 2 + brushWidth * (i + r),
+          brushWidth / 4 + brushWidth * j,
+          brushWidth / 4 + brushWidth * (i + r),
           brushWidth
         )
       );
     }
   }
 }
-
 
 function skyAnimation() {
   loop();
@@ -510,28 +511,37 @@ class Particle {
     this.y = random(windowHeight);
     this.speed = random(0, 10);
     this.radius = random(2, 8);
-    
+
     this.color = color(255);
   }
 
   update() {
     // Simulate vertical movement using Perlin noise
     this.y += this.speed;
-    this.x += noise(this.x, this.y) * 2+1; // Use Perlin noise on the x-axis to make particles move left and right
+    this.x += noise(this.x, this.y) * 2 + 1; // Use Perlin noise on the x-axis to make particles move left and right
     if (this.y > windowHeight) {
       this.y = random(-23, -110);
-      this.x = random(-23,windowWidth);
+      this.x = random(-23, windowWidth);
     }
   }
 
   display() {
     noStroke();
     fill(this.color);
-    ellipse(this.x, this.y, this.radius *1.5);
+    ellipse(this.x, this.y, this.radius * 1.5);
   }
 }
 
+//reference web:https://www.youtube.com/watch?v=BjoM9oKOAKY&t=3s.
+//https://www.youtube.com/watch?v=Qf4dIN99e2w
 
-  //reference web:https://www.youtube.com/watch?v=BjoM9oKOAKY&t=3s.
-  //https://www.youtube.com/watch?v=Qf4dIN99e2w
-
+function drawStars() {
+  for (let i = 0; i < 76; i++) {
+    let x = random(width);
+    let y = random(height/2);
+    let size = random(1, 8);
+    fill("yellow"); // White or yellow color for stars
+    noStroke();
+    ellipse(x, y, size, size);
+  }
+}
