@@ -15,6 +15,9 @@ let brushAmount;
 let inc = 0.1;
 let scl; //segmet size
 let cols, rows;
+let inc_2 = 0.01;
+let scl_2;
+
 
 let zoff = 0;
 let particles = [];
@@ -64,6 +67,7 @@ function setup() {
   brushAmount = width / brushWidth;
 
   scl = windowHeight / 140; //size of segment
+  scl_2 = windowHeight / 150;
   // cols = floor(windowWidth / scl);
   // rows = floor(windowHeight / scl);
   cols = windowWidth / scl;
@@ -112,22 +116,25 @@ function setup() {
   blurryBg1(); //transition
   blurryBg2(); //distant building
 
+  for (let i = 0; i < 500; i++) {
+    particles.push(new Particle());
+  }
   
 }
 
 function draw() {
   //background(255);
-
   drawSkyEllipse();
   drawBuilding();
   waterSurface();
-
+  skyAnimation();
   //waterColor(poly,color(71,41,50));
   // Move the building to the middle of the canvas.
   
   //color of building
 }
 
+;
 function waterSurface() {
   randomSeed(52);
   translate(0, windowHeight / 2);
@@ -203,7 +210,6 @@ function waterSurface() {
 // }
 
 function drawBuilding(){
-  
   fill(71, 41, 50);
   strokeWeight(2);
   stroke(43, 49, 45);
@@ -247,6 +253,7 @@ function drawBuilding(){
 }
 
 function shadow() {
+  push();
   const v = [];
   v.push(createVector(0, 15.5 * unitY));
   v.push(createVector(unitX, 15.5 * unitY));
@@ -262,6 +269,8 @@ function shadow() {
   v.push(createVector(15 * unitX, 14.3 * unitY));
   v.push(createVector(15.5 * unitX, 15.5 * unitY));
   polyShadow = new Poly(v);
+  pop();
+  noLoop();
 }
 
 function blurryBg1() {
@@ -405,6 +414,12 @@ function updateWater() {
   rows = windowHeight / scl;
   yoff = 0;
 }
+function updateskyanimation() {
+  scl_2 = windowHeight / 140;
+  cols = windowWidth / scl;
+  rows = windowHeight / scl;
+  yoff = 0;
+}
 
 // 响应窗口大小变化
 function windowResized() {
@@ -414,6 +429,7 @@ function windowResized() {
   drawSkyEllipse();
   updateDimensions();
   updateWater();
+  updateskyanimation();
   resizeCanvas(windowWidth, windowHeight);
 }
 
@@ -476,3 +492,45 @@ function drawEllipse(lerpEllipse, colorArray, r) {
     }
   }
 }
+
+function skyAnimation() {
+  loop();
+  const xOffset = -(width - 32 * unitX);
+  const yOffset = -(height - 16 * unitY);
+  translate(xOffset, yOffset);
+  for (let particle of particles) {
+    particle.update();
+    particle.display();
+  }
+}
+class Particle {
+  constructor() {
+    this.x = random(windowWidth);
+    this.y = random(windowHeight);
+    this.speed = random(1, 7);
+    this.radius = random(2, 5);
+    
+    this.color = color(255);
+  }
+
+  update() {
+    // Simulate vertical movement using Perlin noise
+    this.y += this.speed;
+    this.x += noise(this.x, this.y) * 2+1; // Use Perlin noise on the x-axis to make particles move left and right
+    if (this.y > windowHeight) {
+      this.y = random(-150, -110);
+      this.x = random(windowWidth);
+    }
+  }
+
+  display() {
+    noStroke();
+    fill(this.color);
+    ellipse(this.x, this.y, this.radius * 2);
+  }
+}
+
+
+  //reference web:https://www.youtube.com/watch?v=BjoM9oKOAKY&t=3s.
+  //https://www.youtube.com/watch?v=Qf4dIN99e2w
+
