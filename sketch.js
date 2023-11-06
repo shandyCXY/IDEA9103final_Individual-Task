@@ -132,8 +132,8 @@ function setup() {
 function draw() {
   background(0, 45);
   drawSkyEllipse();
-  drawBuilding();
   waterSurface();
+  drawBuilding();
   skyAnimation();
   if (isNighttime) {
     drawStars();
@@ -217,6 +217,9 @@ function waterSurface() {
 // }
 
 function drawBuilding() {
+  const xOffset = -(width - 32 * unitX);
+  const yOffset = -(height - 16 * unitY);
+  translate(xOffset, yOffset);
   fill(71, 41, 50);
   strokeWeight(2);
   stroke(43, 49, 45);
@@ -503,9 +506,7 @@ function drawEllipse(lerpEllipse, colorArray, r) {
 
 function skyAnimation() {
   loop();
-  const xOffset = -(width - 32 * unitX);
-  const yOffset = -(height - 16 * unitY);
-  translate(xOffset, yOffset);
+  
   for (let particle of particles) {
     particle.update();
     particle.display();
