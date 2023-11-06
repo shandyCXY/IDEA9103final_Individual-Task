@@ -120,9 +120,12 @@ function setup() {
   for (let i = 0; i < 500; i++) {
     particles.push(new Particle());
   }
+  
+  const buildingColor = color(random(255), random(255), random(255));
+  fill(buildingColor);//random color
 
   let currentHour = hour(); // Get the current hour
-  isNighttime = currentHour >= 20 || currentHour < 14;//star appear link the reallife time with control appear time
+  isNighttime = currentHour >= 20 || currentHour < 15;//star appear link the reallife time with control appear time
 
 }
 
@@ -457,14 +460,15 @@ function generateColor(type, colorLerp, num, r) {
 
 //Draw the first line of ellipses using lerpColor() and color arrays.
 function drawSkyEllipse() {
+  let x = random(brushWidth);
   for (let i = 0; i < skyColorsFrom.length; i++) {
     for (let j = 0; j < brushAmount; j++) {
       noStroke();
       fill(skyColorsFrom[i]);
       skyEllipse.push(
         ellipse(
-          brushWidth / 2 + brushWidth * j,
-          brushWidth / 2 + (height / 8) * i,
+          x / 2 + x * j,
+          x / 2 + (height / 8) * i,
           brushWidth
         )
       );
@@ -480,20 +484,22 @@ function drawSkyEllipse() {
 //r: rows
 //colorArray: each array for sky
 function drawEllipse(lerpEllipse, colorArray, r) {
-  background(0, 0, 0, 45);
+  background(0,25);
+  let x = random(brushWidth);
   for (let i = 0; i < 7; i++) {
     for (let j = 0; j < brushAmount; j++) {
       fill(colorArray[i]);
       lerpEllipse.push(
         ellipse(
-          brushWidth / 4 + brushWidth * j,
+          x / 4 + x * j,
           brushWidth / 4 + brushWidth * (i + r),
           brushWidth
         )
       );
     }
   }
-}
+  }
+
 
 function skyAnimation() {
   loop();
@@ -509,10 +515,10 @@ class Particle {
   constructor() {
     this.x = random(windowWidth);
     this.y = random(windowHeight);
-    this.speed = random(0, 10);
-    this.radius = random(2, 8);
+    this.speed = random(0, 5);
+    this.radius = random(1, 8);
 
-    this.color = color(255);
+    this.color = color(255,74);
   }
 
   update() {
