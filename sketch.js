@@ -507,7 +507,7 @@ class Particle {
   constructor() {
     this.x = random(windowWidth);
     this.y = random(windowHeight);
-    this.speed = random(1, 70);
+    this.speed = random(0, 70);
     this.radius = random(2, 5);
     
     this.color = color(255);
@@ -516,10 +516,10 @@ class Particle {
   update() {
     // Simulate vertical movement using Perlin noise
     this.y += this.speed;
-    this.x += noise(this.x, this.y) * 2+1; // Use Perlin noise on the x-axis to make particles move left and right
+    this.x += noise(this.x, this.y) * 2+5; // Use Perlin noise on the x-axis to make particles move left and right
     if (this.y > windowHeight) {
-      this.y = random(0, -110);
-      this.x = random(windowWidth);
+      this.y = random(-23, -110);
+      this.x = random(-23,windowWidth);
     }
   }
 
