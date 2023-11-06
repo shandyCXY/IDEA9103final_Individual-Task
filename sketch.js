@@ -15,7 +15,7 @@ let brushAmount;
 let inc = 0.1;
 let scl; //segmet size
 let cols, rows;
-let inc_2 = 0.01;
+let inc_2 = 0.1;
 let scl_2;
 
 
@@ -253,7 +253,7 @@ function drawBuilding(){
 }
 
 function shadow() {
-  push();
+  noLoop();
   const v = [];
   v.push(createVector(0, 15.5 * unitY));
   v.push(createVector(unitX, 15.5 * unitY));
@@ -269,8 +269,7 @@ function shadow() {
   v.push(createVector(15 * unitX, 14.3 * unitY));
   v.push(createVector(15.5 * unitX, 15.5 * unitY));
   polyShadow = new Poly(v);
-  pop();
-  noLoop();
+  
 }
 
 function blurryBg1() {
@@ -493,6 +492,7 @@ function drawEllipse(lerpEllipse, colorArray, r) {
   }
 }
 
+
 function skyAnimation() {
   loop();
   const xOffset = -(width - 32 * unitX);
@@ -507,7 +507,7 @@ class Particle {
   constructor() {
     this.x = random(windowWidth);
     this.y = random(windowHeight);
-    this.speed = random(1, 7);
+    this.speed = random(1, 70);
     this.radius = random(2, 5);
     
     this.color = color(255);
@@ -518,7 +518,7 @@ class Particle {
     this.y += this.speed;
     this.x += noise(this.x, this.y) * 2+1; // Use Perlin noise on the x-axis to make particles move left and right
     if (this.y > windowHeight) {
-      this.y = random(-150, -110);
+      this.y = random(0, -110);
       this.x = random(windowWidth);
     }
   }
@@ -526,7 +526,7 @@ class Particle {
   display() {
     noStroke();
     fill(this.color);
-    ellipse(this.x, this.y, this.radius * 2);
+    ellipse(this.x, this.y, this.radius *1.5);
   }
 }
 
