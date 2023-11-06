@@ -15,7 +15,7 @@ let brushAmount;
 let inc = 0.1;
 let scl; //segmet size
 let cols, rows;
-let inc_2 = 0.1;
+let inc_2 = 0.01;
 let scl_2;
 
 
@@ -123,7 +123,7 @@ function setup() {
 }
 
 function draw() {
-  //background(255);
+  background(255);
   drawSkyEllipse();
   drawBuilding();
   waterSurface();
@@ -171,6 +171,7 @@ function waterSurface() {
     zoff += 0.003;
 
   }
+  //change the code here(my pre code ->animation)
   //reference web:https://www.youtube.com/watch?v=BjoM9oKOAKY&t=3s.
   //https://www.youtube.com/watch?v=Qf4dIN99e2w
 }
@@ -507,8 +508,8 @@ class Particle {
   constructor() {
     this.x = random(windowWidth);
     this.y = random(windowHeight);
-    this.speed = random(0, 70);
-    this.radius = random(2, 5);
+    this.speed = random(0, 10);
+    this.radius = random(2, 8);
     
     this.color = color(255);
   }
@@ -516,7 +517,7 @@ class Particle {
   update() {
     // Simulate vertical movement using Perlin noise
     this.y += this.speed;
-    this.x += noise(this.x, this.y) * 2+5; // Use Perlin noise on the x-axis to make particles move left and right
+    this.x += noise(this.x, this.y) * 2+1; // Use Perlin noise on the x-axis to make particles move left and right
     if (this.y > windowHeight) {
       this.y = random(-23, -110);
       this.x = random(-23,windowWidth);
